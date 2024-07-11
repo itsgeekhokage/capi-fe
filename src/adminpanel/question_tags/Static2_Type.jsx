@@ -1,38 +1,46 @@
 /** @format */
 
-import {
-  AddCircle,
-  AddCircleTwoTone,
-  RemoveCircle,
-  RemoveCircleTwoTone,
-} from "@mui/icons-material";
-import { Box, Paper, TextField } from "@mui/material";
+import { AddCircle, Done, RemoveCircle } from "@mui/icons-material";
+import { Box, IconButton, Paper, TextField } from "@mui/material";
 import React, { useState } from "react";
-import OptionComponent from "./OptionComponent";
-
 
 const Static2_Type = () => {
   let [options, setOptions] = useState([]);
 
   const handleAddOption = () => {
     setOptions([...options, ""]);
-  }
+  };
 
-  const handleRemoveOption = (item) => {
-    let newOptions = options.filter((opt, index) => item != index)
-    setOptions(newOptions)
-  }
+  const handleRemoveOption = (index) => {
+    let newOptions = options.filter((_, i) => index !== i);
+    setOptions(newOptions);
+  };
 
   const handleValueChange = (index, value) => {
-    let newOptions = options;
-    console.log(newOptions)
-    setOptions(newOptions)
-  }
+    let newOptions = [...options];
+    newOptions[index] = value;
+    setOptions(newOptions);
+  };
 
   return (
     <Box>
-      <AddCircle onClick={handleAddOption}/>
-      {options.map((option,index) => <OptionComponent handleRemoveOption={handleRemoveOption} option={option}/>)}
+      <IconButton>
+        <AddCircle onClick={handleAddOption} />
+      </IconButton>
+      {options.map((option, index) => (
+        <Paper
+          key={index}
+          sx={{ display: "flex", alignItems: "center", margin: "10px 0" }}>
+          <TextField
+            value={option}
+            onChange={(e) => handleValueChange(index, e.target.value)}
+            sx={{ flexGrow: 1 }}
+          />
+          <IconButton>
+            <RemoveCircle onClick={() => handleRemoveOption(index)} />
+          </IconButton>
+        </Paper>
+      ))}
     </Box>
   );
 };
