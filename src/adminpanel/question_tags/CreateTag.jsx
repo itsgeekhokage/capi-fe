@@ -22,6 +22,7 @@ import {
 import { AddCircleTwoTone, Queue, Remove, Add } from "@mui/icons-material";
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
+import Dynamic_Type from "./Dynamic_Type";
 
 const CreateTag = () => {
   const theme = useTheme();
@@ -45,8 +46,8 @@ const CreateTag = () => {
   };
 
   const handleSubmit = async (req, res) => {
-    isQuestionTag ? handleQuesitonTagSubmit() : handleProjectTagSubmit()
-  }
+    isQuestionTag ? handleQuesitonTagSubmit() : handleProjectTagSubmit();
+  };
 
   const handleQuesitonTagSubmit = async () => {
     const despo = {
@@ -105,7 +106,7 @@ const CreateTag = () => {
 
     const updatedFormData = {
       ...formData,
-      project_code : project.project_code,
+      project_code: project.project_code,
       desposition: JSON.stringify(despo),
     };
 
@@ -237,8 +238,8 @@ const CreateTag = () => {
     setSelectedOption(option);
   };
 
-  useEffect( () =>{
-    if(location.pathname == "/admin/projects/tag/create"){
+  useEffect(() => {
+    if (location.pathname == "/admin/projects/tag/create") {
       setIsQuestionTag(false);
       setProject(location.state);
     }
@@ -319,11 +320,14 @@ const CreateTag = () => {
           justifyContent: "space-between",
           paddingBottom: "1vw",
         }}>
-        <Typography variant="h4"> {isQuestionTag ? "Create Question Tag" : "Create Project Tag"} </Typography>
+        <Typography variant="h4">
+          {" "}
+          {isQuestionTag ? "Create Question Tag" : "Create Project Tag"}{" "}
+        </Typography>
         <Button
           variant="contained"
           color="success"
-          onClick= {handleSubmit}>
+          onClick={handleSubmit}>
           Save
         </Button>
       </Box>
@@ -332,15 +336,18 @@ const CreateTag = () => {
         alignItems="center"
         justifyContent="space-between"
         gap="1vw">
-        { isQuestionTag ?
-        <Box
-          checked={formData.isDefault}
-          sx={{ display: "flex", alignItems: "center" }}
-          onChange={() =>
-            setFormData({ ...formData, isDefault: !formData.isDefault })
-          }>
-          Default: <Switch color="warning" />
-        </Box> : ""}
+        {isQuestionTag ? (
+          <Box
+            checked={formData.isDefault}
+            sx={{ display: "flex", alignItems: "center" }}
+            onChange={() =>
+              setFormData({ ...formData, isDefault: !formData.isDefault })
+            }>
+            Default: <Switch color="warning" />
+          </Box>
+        ) : (
+          ""
+        )}
 
         <TextField
           fullWidth
@@ -418,78 +425,7 @@ const CreateTag = () => {
         )}
       </Box>
 
-      <Box
-        sx={{ display: "flex", marginTop: "2rem" }}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}>
-        <Box
-          ref={sidebarRef}
-          sx={{
-            width: `${width}px`,
-            transition: "width 0.1s ease-out",
-            overflow: "hidden",
-            display: "flex",
-            flexDirection: "column",
-            borderRight: "1px solid #ccc",
-            position: "relative",
-            marginRight: "1rem",
-          }}>
-          <Box
-            sx={{
-              width: "5px",
-              cursor: "ew-resize",
-              position: "absolute",
-              right: 0,
-              top: 0,
-              bottom: 0,
-              backgroundColor: "#ddd",
-              "&:hover": {
-                width: "8px",
-              },
-            }}
-            onMouseDown={handleMouseDown}
-          />
-          <Button
-            onClick={handleAddOption}
-            startIcon={<AddCircleTwoTone />}
-            fullWidth
-            color="info"
-            sx={{ marginBottom: "1rem" }}>
-            Add Option
-          </Button>
-          <List>{options.map((option) => renderOption(option))}</List>
-        </Box>
-        <Box sx={{ flexGrow: 1, paddingLeft: "1rem" }}>
-          {selectedOption && (
-            <Box sx={{ marginTop: "2rem" }}>
-              <Typography variant="h6">Edit Option</Typography>
-              <TextField
-                fullWidth
-                value={selectedOption.text}
-                onChange={(e) =>
-                  handleOptionChange(selectedOption, "text", e.target.value)
-                }
-                placeholder="Option text"
-                size="small"
-                sx={{ marginBottom: "1rem" }}
-              />
-              <FormControlLabel
-                control={
-                  <Switch
-                    color="info"
-                    size="small"
-                    checked={selectedOption.comments}
-                    onChange={(e) =>
-                      handleHasComment(selectedOption, e.target.checked)
-                    }
-                  />
-                }
-                label="Add Comments"
-              />
-            </Box>
-          )}
-        </Box>
-      </Box>
+      <Dynamic_Type options={options} setOptions={setOptions} />
     </Box>
   );
 };

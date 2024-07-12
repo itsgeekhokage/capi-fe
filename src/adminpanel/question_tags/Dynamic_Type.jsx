@@ -1,5 +1,6 @@
 /** @format */
 
+import { useTheme } from "@emotion/react";
 import { Add, AddCircleTwoTone, Queue, Remove } from "@mui/icons-material";
 import {
   Box,
@@ -14,10 +15,34 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { useRef, useState } from "react";
 
-const Dynamic_Type = () => {
-  const [hoveredOption, setHoveredOption] = useState(null);
+const Dynamic_Type = ({ options, setOptions }) => {
+  const theme = useTheme();
   const [selectedOption, setSelectedOption] = useState(null);
+  const [openSublists, setOpenSublists] = useState({});
+  const [width, setWidth] = useState(500);
+
+  const sidebarRef = useRef(null);
+  const isResizing = useRef(false);
+
+  const handleMouseDown = () => {
+    isResizing.current = true;
+  };
+
+  const handleMouseMove = (e) => {
+    if (isResizing.current) {
+      const newWidth =
+        e.clientX - sidebarRef.current.getBoundingClientRect().left;
+      if (newWidth > 100 && newWidth < 800) {
+        setWidth(newWidth);
+      }
+    }
+  };
+
+  const handleMouseUp = () => {
+    isResizing.current = false;
+  };
 
   const toggleSublist = (id) => {
     setOpenSublists((prev) => ({
@@ -85,8 +110,7 @@ const Dynamic_Type = () => {
     <Box
       key={option.id}
       sx={{ marginLeft: parentOption ? "1rem" : "0", padding: "0.25rem" }}
-      onMouseEnter={() => setHoveredOption(option.id)}
-      onMouseLeave={() => setHoveredOption(null)}>
+      >
       <ListItem
         component={Box}
         elevation={selectedOption === option ? 3 : 1}
@@ -114,12 +138,7 @@ const Dynamic_Type = () => {
           />
         </ListItemText>
         <ListItemSecondaryAction
-          sx={{ display: hoveredOption === option.id ? "block" : "none" }}>
-          <Add
-            fontSize="small"
-            sx={{ cursor: "pointer" }}
-            onClick={() => handleAddOption(option, false)}
-          />
+          >
           <Queue
             fontSize="small"
             sx={{ cursor: "pointer" }}
