@@ -38,6 +38,8 @@ const CreateTag = () => {
 
   const [isQuestionTag, setIsQuestionTag] = useState(true);
   const [project, setProject] = useState({});
+  const [isShortAnswer, setIsShortAnswer] = useState(true);
+  const [options, setOptions] = useState([]);
 
   const handleFormData = (name, value) => {
     setFormData((prevFormData) => ({
@@ -143,15 +145,6 @@ const CreateTag = () => {
     }
   };
 
-  const [isShortAnswer, setIsShortAnswer] = useState(true);
-  const [options, setOptions] = useState([
-    {
-      id: 1,
-      text: "",
-      comments: false,
-      sublist: [],
-    },
-  ]);
 
   useEffect(() => {
     if (location.pathname == "/admin/projects/tag/create") {
@@ -159,6 +152,10 @@ const CreateTag = () => {
       setProject(location.state);
     }
   }, []);
+
+  useEffect(()=>{
+    setOptions([]);
+  }, [formData.desposition_type])
 
 
   return (
@@ -273,8 +270,19 @@ const CreateTag = () => {
           />
         )}
       </Box>
-        <Static2_Type/>
-      {/* <Dynamic_Type options={options} setOptions={setOptions} /> */}
+      {formData.desposition_type == "static" && ""}
+      {formData.desposition_type == "dynamic" && (
+        <Dynamic_Type
+          options={options}
+          setOptions={setOptions}
+        />
+      )}
+      {formData.desposition_type == "static2" && (
+        <Static2_Type
+          options={options}
+          setOptions={setOptions}
+        />
+      )}
     </Box>
   );
 };

@@ -4,8 +4,7 @@ import { AddCircle, Done, RemoveCircle } from "@mui/icons-material";
 import { Box, Button, IconButton, Paper, TextField } from "@mui/material";
 import React, { useState } from "react";
 
-const Static2_Type = () => {
-  let [options, setOptions] = useState([]);
+const Static2_Type = ({options, setOptions}) => {
 
   const handleAddOption = () => {
     setOptions([...options, ""]);
