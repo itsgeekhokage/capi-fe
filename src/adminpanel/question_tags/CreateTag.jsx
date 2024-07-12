@@ -23,6 +23,7 @@ import { AddCircleTwoTone, Queue, Remove, Add } from "@mui/icons-material";
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Dynamic_Type from "./Dynamic_Type";
+import Static2_Type from "./Static2_Type";
 
 const CreateTag = () => {
   const theme = useTheme();
@@ -151,92 +152,6 @@ const CreateTag = () => {
       sublist: [],
     },
   ]);
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [openSublists, setOpenSublists] = useState({});
-  const [hoveredOption, setHoveredOption] = useState(null);
-  const [width, setWidth] = useState(500);
-  const sidebarRef = useRef(null);
-  const isResizing = useRef(false);
-
-  const handleMouseDown = () => {
-    isResizing.current = true;
-  };
-
-  const handleMouseMove = (e) => {
-    if (isResizing.current) {
-      const newWidth =
-        e.clientX - sidebarRef.current.getBoundingClientRect().left;
-      if (newWidth > 100 && newWidth < 800) {
-        setWidth(newWidth);
-      }
-    }
-  };
-
-  const handleMouseUp = () => {
-    isResizing.current = false;
-  };
-
-  const toggleSublist = (id) => {
-    setOpenSublists((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  };
-
-  const handleAddOption = (parentOption = null, isSubOption = false) => {
-    const newOption = {
-      id: Date.now(),
-      text: "",
-      comments: false,
-      sublist: [],
-    };
-    if (parentOption && parentOption.comments) return;
-    if (isSubOption && parentOption) {
-      parentOption.sublist.push(newOption);
-      setOpenSublists((prev) => ({
-        ...prev,
-        [parentOption.id]: true,
-      }));
-    } else if (parentOption) {
-      const parentIndex = options.findIndex(
-        (opt) => opt.id === parentOption.id
-      );
-      options.splice(parentIndex + 1, 0, newOption);
-    } else {
-      setOptions([...options, newOption]);
-    }
-    setSelectedOption(newOption);
-    setOptions([...options]);
-  };
-
-  const handleRemoveOption = (optionToRemove, parentOption) => {
-    if (parentOption) {
-      parentOption.sublist = parentOption.sublist.filter(
-        (option) => option.id !== optionToRemove.id
-      );
-      setOptions([...options]);
-    } else {
-      setOptions(options.filter((option) => option.id !== optionToRemove.id));
-    }
-    if (selectedOption && selectedOption.id === optionToRemove.id) {
-      setSelectedOption(null);
-    }
-  };
-
-  const handleOptionChange = (optionToUpdate, key, value) => {
-    optionToUpdate[key] = value;
-    setOptions([...options]);
-  };
-
-  const handleHasComment = (optionToUpdate, value) => {
-    optionToUpdate["comments"] = value;
-    optionToUpdate.sublist = [];
-    setOptions([...options]);
-  };
-
-  const handleOptionSelect = (option) => {
-    setSelectedOption(option);
-  };
 
   useEffect(() => {
     if (location.pathname == "/admin/projects/tag/create") {
@@ -245,72 +160,6 @@ const CreateTag = () => {
     }
   }, []);
 
-  const renderOption = (option, parentOption = null) => (
-    <Box
-      key={option.id}
-      sx={{ marginLeft: parentOption ? "1rem" : "0", padding: "0.25rem" }}
-      onMouseEnter={() => setHoveredOption(option.id)}
-      onMouseLeave={() => setHoveredOption(null)}>
-      <ListItem
-        component={Box}
-        elevation={selectedOption === option ? 3 : 1}
-        sx={{
-          backgroundColor:
-            selectedOption === option
-              ? "info.main"
-              : theme.palette.background.default,
-          borderRadius: "4px",
-          cursor: "pointer",
-          padding: "0 5px",
-        }}
-        onClick={() => {
-          handleOptionSelect(option);
-          toggleSublist(option.id);
-        }}>
-        <ListItemText>
-          <TextField
-            value={option.text}
-            onChange={(e) => handleOptionChange(option, "text", e.target.value)}
-            size="small"
-            placeholder="Option text"
-            fullWidth
-            variant="standard"
-          />
-        </ListItemText>
-        <ListItemSecondaryAction
-          sx={{ display: hoveredOption === option.id ? "block" : "none" }}>
-          <Add
-            fontSize="small"
-            sx={{ cursor: "pointer" }}
-            onClick={() => handleAddOption(option, false)}
-          />
-          <Queue
-            fontSize="small"
-            sx={{ cursor: "pointer" }}
-            onClick={(e) => {
-              e.stopPropagation();
-              handleAddOption(option, true);
-            }}
-          />
-          <Remove
-            fontSize="small"
-            sx={{ cursor: "pointer" }}
-            onClick={(e) => {
-              e.stopPropagation();
-              handleRemoveOption(option, parentOption);
-            }}
-          />
-        </ListItemSecondaryAction>
-      </ListItem>
-      <Collapse in={openSublists[option.id]}>
-        {option.sublist.length > 0 && (
-          <List sx={{ padding: 0 }}>
-            {option.sublist.map((subOption) => renderOption(subOption, option))}
-          </List>
-        )}
-      </Collapse>
-    </Box>
-  );
 
   return (
     <Box>
@@ -424,8 +273,8 @@ const CreateTag = () => {
           />
         )}
       </Box>
-
-      <Dynamic_Type options={options} setOptions={setOptions} />
+        <Static2_Type/>
+      {/* <Dynamic_Type options={options} setOptions={setOptions} /> */}
     </Box>
   );
 };
