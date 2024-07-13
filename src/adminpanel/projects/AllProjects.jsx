@@ -95,7 +95,6 @@ export default function AllProjects() {
           rows={rows}
           columns={columns}
           pageSize={5}
-          getRowId={(row) => row.project_code}
         />
       </Box>
     </Box>
