@@ -27,7 +27,6 @@ const EditAgent = () => {
     vendor: "",
     is_active: false,
     org_id: "",
-    vendor: "",
   });
 
   const [roles, setRoles] = useState([]);
@@ -41,6 +40,7 @@ const EditAgent = () => {
   }, [location.state]);
 
   const changeFormData = (name, value) => {
+    console.log(value);
     setFormData({ ...formData, [name]: value });
   };
 
@@ -49,6 +49,7 @@ const EditAgent = () => {
   };
 
    const saveNewVendor = async () => {
+    console.log("here")
      try {
        const response = await fetch(
          `${import.meta.env.VITE_HOST_API}/vendor/create/new`,
@@ -66,6 +67,8 @@ const EditAgent = () => {
        if (!response.ok) {
          throw new Error("response was not ok");
        }
+
+       console.log(result);
      } catch (error) {
        alert("save nhi hua");
        console.log(error);
@@ -79,10 +82,12 @@ const EditAgent = () => {
       alert("ID is not defined");
       return;
     }
-    if (vendor == "other") {
+    console.log(formData);
+    if (formData.vendor == "other") {
       saveNewVendor();
     }
     const payload = { ...formData, role_id: formData.role, updated_by: "1", vendor : formData.vendor == "other" ? otherVendor : formData.vendor };
+
 
     console.log(payload);
     try {

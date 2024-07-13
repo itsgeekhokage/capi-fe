@@ -120,7 +120,7 @@ const CreateAgentsManually = () => {
       console.log(error);
     }
   };
-  
+
   const fetchVendors = async () => {
     try {
       const response = await fetch(

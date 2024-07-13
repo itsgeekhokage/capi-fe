@@ -14,7 +14,6 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
-import { AddCircleTwoTone, Queue, Remove, Add } from "@mui/icons-material";
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Dynamic_Type from "./Dynamic_Type";
