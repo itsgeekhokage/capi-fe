@@ -10,7 +10,7 @@ import EditBasicProjectDetails from "./EditBasicProjectDetails";
 import TagsModal from "./TagsModal";
 import SelectedQuestionTable from "./SelectedQuestionTable";
 import { fetchSingleProject } from "../../../apis/adminpanel/projects.js";
-import { fetchQuestionTags } from "../../../apis/adminpanel/questionTags.jsx";
+import { fetchQuestionTags } from "../../../apis/adminpanel/questionTags.js";
 
 const EditProject = () => {
   const location = useLocation();

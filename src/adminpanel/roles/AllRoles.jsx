@@ -13,6 +13,7 @@ import {
 import RoleCard from "./RoleCard";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@emotion/react";
+import { fetchAllRoles } from "../../apis/adminpanel/roles";
 
 const AllRoles = () => {
   const navigate = useNavigate();
@@ -20,17 +21,8 @@ const AllRoles = () => {
   const [roles, setRoles] = useState([]);
 
   const fetchRoles = async () => {
-    try {
-      const response = await fetch(`${import.meta.env.VITE_HOST_API}/roles/get/all`);
-      if(!response.ok){
-        throw new Error("skdljflsd");
-      }
-      const data = await response.json();
-      console.log(data)
-      if(data.data) setRoles(data.data);
-    } catch (error) {
-      console.log(error);
-    }
+    const data = await fetchAllRoles();
+    setRoles(data);
   }
 
   useEffect(()=>{
