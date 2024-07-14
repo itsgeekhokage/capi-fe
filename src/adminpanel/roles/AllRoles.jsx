@@ -4,9 +4,6 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
-  List,
-  ListItem,
-  ListItemText,
   Button,
   Paper,
 } from "@mui/material";

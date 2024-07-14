@@ -13,6 +13,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@emotion/react";
 import { SearchOutlined } from "@mui/icons-material";
+import { fetchAllControls } from "../../apis/adminpanel/controls";
 
 
 
@@ -142,26 +143,15 @@ const CreateRole = () => {
     );
 
     const fetchControls = async () => {
-      try {
-        const response = await fetch(
-          `${import.meta.env.VITE_HOST_API}/controls/get/all`
-        );
-        if (!response.ok) {
-          alert("internal server error");
-          throw new Error("reponse was not okk");
-        }
-        const data = await response.json();
-        const controls = data.data;
 
-        setControlSet1(controls.filter(
-          (control) => control.type === "admin"
-        ));
-        setControlSet2(controls.filter(
-          (control) => control.type === "agent"
-        ));
-      } catch (error) {
-        console.log(error);
-      }
+      const controls = await fetchAllControls();
+
+      setControlSet1(controls.filter(
+        (control) => control.type === "admin"
+      ));
+      setControlSet2(controls.filter(
+        (control) => control.type === "agent"
+      ));
     };
 
     useEffect(() => {
