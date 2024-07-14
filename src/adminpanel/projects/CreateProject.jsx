@@ -13,6 +13,7 @@ import {
   Button,
 } from "@mui/material";
 import React, { useState } from "react";
+import { submitProject } from "../../apis/adminpanel/projects";
 
 const CreateProject = () => {
   const theme = useTheme();
@@ -31,31 +32,13 @@ const CreateProject = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_HOST_API}/projects/create/new`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
 
-      const responseData = await response.json();
-      setFormData({
-        project_name: "",
-        project_code: "",
-      });
-      console.log(responseData.message);
-      if (!response.ok) {
-        alert("Internal server error");
-        throw new Error("Internal server error");
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    const message = await submitProject(formData);
+    alert(message);
+    setFormData({
+      project_name: "",
+      project_code: "",
+    });
   };
 
   return (

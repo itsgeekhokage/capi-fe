@@ -9,6 +9,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import EditBasicProjectDetails from "./EditBasicProjectDetails";
 import TagsModal from "./TagsModal";
 import SelectedQuestionTable from "./SelectedQuestionTable";
+import { fetchSingleProject } from "../../../apis/adminpanel/projects.js";
+import { fetchQuestionTags } from "../../../apis/adminpanel/questionTags.jsx";
 
 const EditProject = () => {
   const location = useLocation();
@@ -26,39 +28,17 @@ const EditProject = () => {
   }, []);
 
   const fetchTags = async () => {
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_HOST_API}/questiontags/get/all`
-      );
-      if (!response.ok) {
-        alert("internal server error");
-        throw new Error("reponse was not okk");
-      }
-      const data = await response.json();
-      setTags(data.data);
-    } catch (error) {
-      console.log(error);
-    }
+    const data = await fetchQuestionTags();
+    setTags(data);
   };
 
   useEffect(() => {
     console.log(location.state);
     const projectId = location.state.id;
     const fetchProject = async () => {
-      try {
-        const response = await fetch(
-          `${import.meta.env.VITE_HOST_API}/projects/get/${projectId}`
-        );
-        if (!response.ok) {
-          alert("internal server error");
-          throw new Error("reponse was not okk");
-        }
-        const data = await response.json();
-        setProject(data.data);
-        setSelectedTags(data.data.project_tags)
-      } catch (error) {
-        console.log(error);
-      }
+      const data = await fetchSingleProject(projectId);
+      setProject(data);
+      setSelectedTags(data.project_tags)
     };
     fetchProject();
   }, []);

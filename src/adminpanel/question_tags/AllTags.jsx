@@ -6,6 +6,7 @@ import { Switch, Button, Container, Box, Typography, Paper } from "@mui/material
 import { Edit } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@emotion/react";
+import { fetchQuestionTags } from "../../apis/adminpanel/questionTags";
 
 const AllTags = () => {
   const [rows, setRows] = useState([]);
@@ -14,15 +15,8 @@ const AllTags = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `${import.meta.env.VITE_HOST_API}/questiontags/get/all`
-        );
-        const data = await response.json();
-        setRows(data.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
+      const data = await fetchQuestionTags();
+      setRows(data);
     };
 
     fetchData();

@@ -24,6 +24,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Dynamic_Type from "./Dynamic_Type";
 import Static2_Type from "./Static2_Type";
+import { createQuestionTag } from "../../apis/adminpanel/questionTags";
 
 const CreateTag = () => {
   const theme = useTheme();
@@ -68,24 +69,11 @@ const CreateTag = () => {
 
     console.log(updatedFormData);
 
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_HOST_API}/questiontags/create/new`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updatedFormData),
-        }
-      );
+    const data = await createQuestionTag(updatedFormData);
 
-      if (!response.ok) {
-        alert("Internal server error");
-        throw new Error("Internal server error");
-      }
+    alert(data);
 
-      const responseData = await response.json();
+
       setFormData({
         isDefault: false,
         tag: "",
@@ -93,9 +81,7 @@ const CreateTag = () => {
         desposition_type: "",
         desposition: "",
       });
-    } catch (error) {
-      console.log(error);
-    }
+
   };
 
   const handleProjectTagSubmit = async () => {

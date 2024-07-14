@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
 import { useTheme } from "@emotion/react";
 import { Box, Button, Typography } from "@mui/material";
+import { fetchProjects } from "../../apis/adminpanel/projects";
 
 export default function AllProjects() {
   const navigate = useNavigate();
@@ -45,26 +46,16 @@ export default function AllProjects() {
     navigate("/admin/projects/edit", { state: row });
   };
 
-  const fetchProjects = async () => {
-    console.log("here")
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_HOST_API}/projects/get/all`
-      );
-      if (!response.ok) {
-        alert("Internal server error");
-        throw new Error("Response was not okay");
-      }
-      const data = await response.json();
-      setRows(data.data);
-      console.log(data.data)
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
 
   useEffect(() => {
-    fetchProjects();
+    const fetch = async () => {
+      const data = await fetchProjects();
+      setRows(data);
+    }
+
+    fetch();
+
   }, []);
 
   return (

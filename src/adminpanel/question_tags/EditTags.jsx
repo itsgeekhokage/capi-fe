@@ -18,6 +18,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Dynamic_Type from "./Dynamic_Type";
 import Static2_Type from "./Static2_Type";
+import { editQuestionTag } from "../../apis/adminpanel/questionTags";
 
 const EditTag = () => {
   const theme = useTheme();
@@ -110,34 +111,16 @@ const EditTag = () => {
       desposition: JSON.stringify(despo),
     };
 
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_HOST_API}/questiontags/update/${tagId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updatedFormData),
-        }
-      );
+    const data = await editQuestionTag(tagId, updatedFormData);
+    alert(data);
 
-      if (!response.ok) {
-        alert("Internal server error");
-        throw new Error("Internal server error");
-      }
-
-      const responseData = await response.json();
-      setFormData({
-        isDefault: false,
-        tag: "",
-        placeholder: "",
-        desposition_type: "",
-        desposition: "",
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    setFormData({
+      isDefault: false,
+      tag: "",
+      placeholder: "",
+      desposition_type: "",
+      desposition: "",
+    });
   };
 
   const handleProjectTagSubmit = async () => {
