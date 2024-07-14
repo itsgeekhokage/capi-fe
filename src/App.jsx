@@ -29,6 +29,7 @@ import CreateTag from "./adminpanel/question_tags/CreateTag";
 import EditTag from "./adminpanel/question_tags/EditTags.jsx";
 import EditProjectTag from "./adminpanel/projects/editproject/EditProjectTag.jsx";
 import Static2_Type from "./adminpanel/question_tags/Static2_Type.jsx";
+import Report from "./adminpanel/report/Report.jsx";
 
 function App() {
   return (
@@ -103,7 +104,7 @@ function App() {
           <Route path="home" element={<QuestionList/>}/>
           <Route path="question" element={<QuestionBoard/>}/>
         </Route>
-        <Route path="/test" element={<Static2_Type/>}></Route>
+        <Route path="/report" element={<Report/>}></Route>
       </Routes>
     </Router>
   );

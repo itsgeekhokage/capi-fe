@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { useTheme } from "@emotion/react";
 import { SearchOutlined } from "@mui/icons-material";
 import { fetchAllControls } from "../../apis/adminpanel/controls";
+import { createRole } from "../../apis/adminpanel/roles";
 
 
 
@@ -106,35 +107,14 @@ const CreateRole = () => {
       updated_by: "1",
     };
     console.log(data);
-     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_HOST_API}/roles/create/new`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
 
-      if (!response.ok) {
-        alert("Internal server error");
-        throw new Error("Internal server error");
-      }
-
-      const responseData = await response.json();
-
-      alert(responseData.message);
-
-      setFormData({
-        name : "",
-        controlsSet1 : [],
-        controlsSet2 : []
-      })
-    } catch (error) {
-      console.log(error);
-    }
+    const result = await createRole(data);
+    alert(result);
+    setFormData({
+      name : "",
+      controlsSet1 : [],
+      controlsSet2 : []
+    })
   };
 
   const filterControls = (controls) =>

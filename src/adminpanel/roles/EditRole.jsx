@@ -13,6 +13,7 @@ import {
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useTheme } from "@emotion/react";
 import { Search, SearchOutlined } from "@mui/icons-material";
+import { updateRoles } from "../../apis/adminpanel/roles";
 
 const EditRole = ({data}) => {
   const { roleId } = useParams();
@@ -73,30 +74,10 @@ const EditRole = ({data}) => {
 
     console.log(data);
 
-     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_HOST_API}/roles/update/${roleId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
-
-      if (!response.ok) {
-        alert("Internal server error");
-        throw new Error("Internal server error");
-      }
-
-      const responseData = await response.json();
-
-      console.log(responseData.message);
-      navigate("/admin/roles/all");
-    } catch (error) {
-      console.log(error);
-    }
+    const result = await updateRoles(roleId, data);
+    console.log(result);
+    if(result) navigate("/admin/roles/all");
+    else alert("error")
   };
 
   const handleSearchChange = (e) => {
