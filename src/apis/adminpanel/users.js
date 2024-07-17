@@ -62,4 +62,28 @@ const createAgentManual = async (payload) => {
         console.log(error);
     }
 }
-export {fetchAllAgents, createAgentsExcel, createAgentManual};
+
+const updateAgents = async (id, payload) => {
+    try {
+        const response = await fetch(
+            `${import.meta.env.VITE_HOST_API}/user/update/${id}`,
+            {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload),
+            }
+        );
+
+        const result = await response.json();
+        alert(result.message);
+
+        if (!response.ok) {
+            throw new Error("response was not ok");
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+export {fetchAllAgents, createAgentsExcel, createAgentManual, updateAgents};

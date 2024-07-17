@@ -15,6 +15,9 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { createVendor, fetchAllVendors } from "../../apis/adminpanel/vendor";
+import { updateAgents } from "../../apis/adminpanel/users";
+import { fetchAllRoles } from "../../apis/adminpanel/roles";
 
 const EditAgent = () => {
   const location = useLocation();
@@ -49,30 +52,7 @@ const EditAgent = () => {
   };
 
    const saveNewVendor = async () => {
-    console.log("here")
-     try {
-       const response = await fetch(
-         `${import.meta.env.VITE_HOST_API}/vendor/create/new`,
-         {
-           method: "POST",
-           headers: {
-             "Content-Type": "application/json",
-           },
-           body: JSON.stringify({ name: otherVendor }),
-         }
-       );
-
-       const result = await response.json();
-
-       if (!response.ok) {
-         throw new Error("response was not ok");
-       }
-
-       console.log(result);
-     } catch (error) {
-       alert("save nhi hua");
-       console.log(error);
-     }
+    await createVendor(otherVendor);
    };
 
   const submitHandler = async (e) => {
@@ -88,62 +68,20 @@ const EditAgent = () => {
     }
     const payload = { ...formData, role_id: formData.role, updated_by: "1", vendor : formData.vendor == "other" ? otherVendor : formData.vendor };
 
+    await updateAgents(id, payload);
 
     console.log(payload);
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_HOST_API}/user/update/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        }
-      );
 
-      const result = await response.json();
-      alert(result.message);
-
-      if (!response.ok) {
-        throw new Error("response was not ok");
-      }
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   const fetchRoles = async () => {
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_HOST_API}/roles/get/all`
-      );
-      if (!response.ok) {
-        throw new Error("Failed to fetch roles");
-      }
-      const data = await response.json();
-      if (data.data) {
-        setRoles(data.data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    const result = await fetchAllRoles();
+    setRoleList(result);
   };
 
   const fetchVendors = async () => {
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_HOST_API}/vendor/get/all`
-      );
-      if (!response.ok) {
-        throw new Error("vendors nhi aa rahe bhai");
-      }
-      const data = await response.json();
-      console.log(data);
-      if (data.data) setVendorList(data.data);
-    } catch (error) {
-      console.log(error);
-    }
+   const result = await fetchAllVendors();
+   if (result) setVendorList(result);
   };
 
   useEffect(() => {
