@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { updateControls } from "../../apis/adminpanel/controls";
 
 const EditControl = () => {
   const theme = useTheme();
@@ -45,32 +46,8 @@ const EditControl = () => {
 
     const updatedData = { ...formData, updated_by: "2" };
 
-    try {
-      const apiUrl = `${import.meta.env.VITE_HOST_API}/controls/update/${id}`;
-
-      if (!import.meta.env.VITE_HOST_API) {
-        console.error("Environment variable VITE_HOST_API is not defined");
-        return;
-      }
-
-      const response = await fetch(apiUrl, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedData),
-      });
-
-      if (!response.ok) {
-        alert("Internal server error");
-        throw new Error("Response was not ok");
-      }
-
-      const responseData = await response.json();
-      alert(responseData.message);
-    } catch (error) {
-      console.log("Error:", error);
-    }
+    const result = await updateControls(id, updatedData);
+    alert(result);
   };
 
 

@@ -58,9 +58,18 @@ function App() {
             path="roles/edit"
             element={<EditRole />}
           />
-          <Route path="controls/all" element={<AllControls/>}/>
-          <Route path="controls/create" element={<CreateControl/>}/>
-          <Route path="controls/edit" element={<EditControl/>}/>
+          <Route
+            path="controls/all"
+            element={<AllControls />}
+          />
+          <Route
+            path="controls/create"
+            element={<CreateControl />}
+          />
+          <Route
+            path="controls/edit"
+            element={<EditControl />}
+          />
           <Route
             path="agents/all"
             element={<AllAgents />}
@@ -93,18 +102,34 @@ function App() {
             path="projects/tag/edit"
             element={<EditTag />}
           />
-          <Route path="tags/all" element={<AllTags/>} />
-          <Route path="tags/create" element={<CreateTag/>} />
-          <Route path="tags/edit" element={<EditTag/>} />
+          <Route
+            path="tags/all"
+            element={<AllTags />}
+          />
+          <Route
+            path="tags/create"
+            element={<CreateTag />}
+          />
+          <Route
+            path="tags/edit"
+            element={<EditTag />}
+          />
+          <Route
+            path="report"
+            element={<Report />}></Route>
         </Route>
         <Route
           path="/agent"
-          element={<AgentDashboard />}
-        >
-          <Route path="home" element={<QuestionList/>}/>
-          <Route path="question" element={<QuestionBoard/>}/>
+          element={<AgentDashboard />}>
+          <Route
+            path="home"
+            element={<QuestionList />}
+          />
+          <Route
+            path="question"
+            element={<QuestionBoard />}
+          />
         </Route>
-        <Route path="/report" element={<Report/>}></Route>
       </Routes>
     </Router>
   );

@@ -66,7 +66,7 @@ const Sidebar = () => {
   const sections = [
     { name: "Agents", icon: <Group />, link: "/admin/agents/all" },
     { name: "Projects", icon: <Domain />, link: "/admin/projects/all" },
-    { name: "Report", icon: <ReportOutlined />, link: "/admin/projects/all" },
+    { name: "Report", icon: <ReportOutlined />, link: "/admin/report" },
   ];
 
   const bottomSections = [

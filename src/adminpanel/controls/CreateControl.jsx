@@ -13,6 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
+import { createControls } from "../../apis/adminpanel/controls";
 
 const CreateControl = () => {
   const theme = useTheme();
@@ -30,37 +31,14 @@ const CreateControl = () => {
   };
 
   const handleSubmit = async () => {
-    formData.updated_by = "1";
-
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_HOST_API}/controls/create/new`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
-
-      if (!response.ok) {
-        alert("Internal server error");
-        throw new Error("Internal server error");
-      }
-
-      const responseData = await response.json();
-      setFormData({
-        name: "",
-        path: "",
-        type: "",
-      });
-      console.log(responseData.message);
-    } catch (error) {
-      console.log(error);
-    }
+    const result = await createControls(formData);
+    alert(result.message);
+    setFormData({
+      name: "",
+      path: "",
+      type: "",
+    });
   };
-
   return (
     <Box>
       <Paper sx={{ padding: "1vw" }}>
