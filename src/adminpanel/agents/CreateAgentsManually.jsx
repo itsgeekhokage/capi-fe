@@ -12,6 +12,10 @@ import {
   MenuItem,
 } from "@mui/material";
 import { useTheme } from "@emotion/react";
+import { fetchProjects } from "../../apis/adminpanel/projects";
+import { fetchAllRoles } from "../../apis/adminpanel/roles";
+import { createAgentManual } from "../../apis/adminpanel/users";
+import { createVendor, fetchAllVendors } from "../../apis/adminpanel/vendor";
 
 const CreateAgentsManually = () => {
   const [username, setUsername] = useState("");
@@ -28,27 +32,7 @@ const CreateAgentsManually = () => {
   const theme = useTheme();
 
   const saveNewVendor = async () => {
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_HOST_API}/vendor/create/new`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({name : otherVendor}),
-        }
-      );
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error("response was not ok");
-      }
-    } catch (error) {
-      alert("save nhi hua")
-      console.log(error);
-    }
+    await createVendor(otherVendor);
   }
 
   const handleSubmit = async (e) => {
@@ -65,80 +49,26 @@ const CreateAgentsManually = () => {
       vendor: vendor=="other" ? otherVendor : vendor,
       updated_by: "1",
     };
-    console.log(payload);
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_HOST_API}/user/create/manual`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        }
-      );
-
-      const result = await response.json();
-      alert(result.message);
-
-      if (!response.ok) {
-        throw new Error("response was not ok");
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    await createAgentManual(payload);
   };
 
-  const fetchProjects = async () => {
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_HOST_API}/projects/get/all`
-      );
-      if (!response.ok) {
-        alert("Internal server error");
-        throw new Error("Response was not okay");
-      }
-      const data = await response.json();
-      setProjectList(data.data);
-    } catch (error) {
-      console.log(error);
-    }
+  const fetchAllProjects = async () => {
+    const result =  await fetchProjects();
+    setProjectList(result);
   };
 
   const fetchRoles = async () => {
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_HOST_API}/roles/get/all`
-      );
-      if (!response.ok) {
-        throw new Error("skdljflsd");
-      }
-      const data = await response.json();
-      console.log(data);
-      if (data.data) setRoleList(data.data);
-    } catch (error) {
-      console.log(error);
-    }
+    const result = await fetchAllRoles();
+    setRoleList(result);
   };
 
   const fetchVendors = async () => {
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_HOST_API}/vendor/get/all`
-      );
-      if (!response.ok) {
-        throw new Error("vendors nhi aa rahe bhai");
-      }
-      const data = await response.json();
-      console.log(data);
-      if (data.data) setVendorList(data.data);
-    } catch (error) {
-      console.log(error);
-    }
+    const result = await fetchAllVendors();
+    if (result) setVendorList(result);
   };
 
   useEffect(() => {
-    fetchProjects();
+    fetchAllProjects();
     fetchRoles();
     fetchVendors();
   }, []);

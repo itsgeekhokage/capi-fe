@@ -41,7 +41,7 @@ export default function AllAgents() {
   };
 
   const fetchAgents = async () => {
-    const result = fetchAllAgents();
+    const result = await fetchAllAgents();
     setRows(result);
   };
 

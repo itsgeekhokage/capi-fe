@@ -15,6 +15,7 @@ import {
   Input,
 } from "@mui/material";
 import { useTheme } from "@emotion/react";
+import { createAgentsExcel } from "../../apis/adminpanel/users";
 
 
 const CreateAgentsByExcel = () => {
@@ -101,27 +102,7 @@ const CreateAgentsByExcel = () => {
 
   const handleSubmit = async () => {
     const payload = { users: jsonData, updated_by: "1" };
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_HOST_API}/user/create/excel`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        }
-      );
-
-      const result = await response.json();
-      alert(result.message);
-
-      if (!response.ok) {
-        throw new Error("Response was not OK");
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    await createAgentsExcel(payload);
   };
 
   return (
