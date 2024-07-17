@@ -72,4 +72,31 @@ const updateControls = async (id, data) => {
     }
 }
 
-export {fetchAllControls, createControls, updateControls};
+const deleteControls = async (id) => {
+
+
+    try {
+        const response = await fetch(
+            `${import.meta.env.VITE_HOST_API}/controls/delete/${id}`,
+            {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+
+        if (!response.ok) {
+            alert("Internal server error");
+            throw new Error("Response was not ok");
+        }
+        const responseData = await response.json();
+        return(responseData.message);
+
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export {fetchAllControls, createControls, updateControls, deleteControls};

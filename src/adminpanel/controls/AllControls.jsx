@@ -6,6 +6,7 @@ import { Box, Button, Paper, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { deleteControls, fetchAllControls } from "../../apis/adminpanel/controls";
 
 const AllControls = () => {
   const theme = useTheme();
@@ -14,34 +15,14 @@ const AllControls = () => {
 
   const handleDelete = async (row) => {
     const id = row?.id;
-     if (!id) {
-       alert("ID is not defined");
-       return;
-     }
-
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_HOST_API}/controls/delete/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      const responseData = await response.json();
-      alert(responseData.message);
-
-      fetchControls();
-
-      if (!response.ok) {
-        alert("Internal server error");
-        throw new Error("Response was not ok");
-      }
-    } catch (error) {
-      console.log(error);
+    if (!id) {
+      alert("ID is not defined");
+      return;
     }
+
+    const result = await deleteControls(id);
+    alert(result);
+    fetchControls();
   }
 
   const columns = [
@@ -67,19 +48,8 @@ const AllControls = () => {
   ];
 
   const fetchControls = async () => {
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_HOST_API}/controls/get/all`
-      );
-      if (!response.ok) {
-        alert("internal server error");
-        throw new Error("reponse was not okk");
-      }
-      const data = await response.json();
-      setRows(data.data);
-    } catch (error) {
-      console.log(error);
-    }
+    const result = await fetchAllControls();
+    setRows(result);
   };
 
   useEffect(() => {

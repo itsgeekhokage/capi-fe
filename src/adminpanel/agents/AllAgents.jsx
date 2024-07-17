@@ -5,6 +5,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@emotion/react";
 import { Box, Button, Typography } from "@mui/material";
+import { fetchAllAgents } from "../../apis/adminpanel/users";
 
 export default function AllAgents() {
   const navigate = useNavigate();
@@ -40,20 +41,8 @@ export default function AllAgents() {
   };
 
   const fetchAgents = async () => {
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_HOST_API}/user/get/all`
-      );
-      if (!response.ok) {
-        alert("internal server error");
-        throw new Error("reponse was not okk");
-      }
-      const data = await response.json();
-      console.log(data.data)
-      setRows(data.data);
-    } catch (error) {
-      console.log(error);
-    }
+    const result = fetchAllAgents();
+    setRows(result);
   };
 
   useEffect(() => {
